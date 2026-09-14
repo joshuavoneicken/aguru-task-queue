@@ -1,0 +1,33 @@
+name: ci
+on: [push]
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env: { POSTGRES_USER: queue, POSTGRES_PASSWORD: queue, POSTGRES_DB: queue }
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd "pg_isready -U queue" --health-interval 2s
+          --health-timeout 2s --health-retries 15
+    env:
+      DATABASE_URL: postgres://queue:queue@localhost:5432/queue
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with: { node-version: 22, cache: npm }
+      - run: npm ci
+      - run: npm run typecheck
+      - run: npm test
+      - run: npm run test:coverage
+  ui:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with: { node-version: 22, cache: npm, cache-dependency-path: ui/package-lock.json }
+      - run: npm --prefix ui ci
+      - run: npm --prefix ui run typecheck
+      - run: npm --prefix ui test
+      - run: npm --prefix ui run build

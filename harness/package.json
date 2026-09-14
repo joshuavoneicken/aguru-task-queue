@@ -1,0 +1,22 @@
+{
+  "name": "@aguru/harness",
+  "version": "0.1.0",
+  "description": "A self-contained worker harness: claims tasks in batches, dispatches each to the handler registered for its type, heartbeats leases, and acks/nacks. Transport-agnostic (inject a QueueClient) and generic over task types — zero runtime dependencies.",
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./index.ts",
+      "default": "./index.ts"
+    },
+    "./manual-clock": {
+      "types": "./testing/manual-clock.ts",
+      "default": "./testing/manual-clock.ts"
+    }
+  },
+  "files": [
+    "**/*.ts",
+    "!**/*.test.ts"
+  ],
+  "sideEffects": false,
+  "license": "MIT"
+}

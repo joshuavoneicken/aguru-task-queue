@@ -1,0 +1,3 @@
+[
+  { "name": "jobs", "maxAttempts": 5, "backoffBaseMs": 3000, "backoffCapMs": 300000, "dedupeWindowMs": 600000 }
+]
